@@ -1,0 +1,6 @@
+CustomLegend CustomLegend.qml
+ChartViewSelector ChartViewSelector.qml
+ChartViewStacked ChartViewStacked.qml
+ChartViewHighlighted ChartViewHighlighted.qml
+AnimatedAreaSeries AnimatedAreaSeries.qml
+
