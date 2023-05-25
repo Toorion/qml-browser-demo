@@ -3,7 +3,6 @@
 
 /* This script file handles the game logic */
 .pragma library
-.import QtQuick.LocalStorage as Sql
 
 var maxColumn = 10;
 var maxRow = 13;
@@ -427,99 +426,21 @@ function puzzleVictoryCheck(clearedAll)//gameOver has also been set if no more m
 
 function getHighScore()
 {
-    var db = Sql.LocalStorage.openDatabaseSync(
-        "SameGame",
-        "2.0",
-        "SameGame Local Data",
-        100
-    );
-    db.transaction(
-        function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Scores(game TEXT, score NUMBER, gridSize TEXT, time NUMBER)');
-            // Only show results for the current grid size
-            var rs = tx.executeSql('SELECT * FROM Scores WHERE gridSize = "'
-                + maxColumn + "x" + maxRow + '" AND game = "' + gameMode + '" ORDER BY score desc');
-            if (rs.rows.length > 0)
-                gameCanvas.highScore = rs.rows.item(0).score;
-            else
-                gameCanvas.highScore = 0;
-        }
-    );
+    gameCanvas.highScore = 0;
 }
 
 function saveHighScore(score)
 {
-    // Offline storage
-    var db = Sql.LocalStorage.openDatabaseSync(
-        "SameGame",
-        "2.0",
-        "SameGame Local Data",
-        100
-    );
-    var dataStr = "INSERT INTO Scores VALUES(?, ?, ?, ?)";
-    var data = [
-        gameMode,
-        score,
-        maxColumn + "x" + maxRow,
-        Math.floor(gameDuration / 1000)
-    ];
-    if (score >= gameCanvas.highScore)//Update UI field
-        gameCanvas.highScore = score;
-
-    db.transaction(
-        function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Scores(game TEXT, score NUMBER, gridSize TEXT, time NUMBER)');
-            tx.executeSql(dataStr, data);
-        }
-    );
 }
 
 function getLevelHistory()
 {
-    var db = Sql.LocalStorage.openDatabaseSync(
-        "SameGame",
-        "2.0",
-        "SameGame Local Data",
-        100
-    );
-    db.transaction(
-        function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Puzzle(level TEXT, score NUMBER, moves NUMBER, time NUMBER)');
-            var rs = tx.executeSql('SELECT * FROM Puzzle WHERE level = "' + puzzlePath + '" ORDER BY score desc');
-            if (rs.rows.length > 0) {
-                gameCanvas.puzzleWon = true;
-                gameCanvas.highScore = rs.rows.item(0).score;
-            } else {
-                gameCanvas.puzzleWon = false;
-                gameCanvas.highScore = 0;
-            }
-        }
-    );
+    gameCanvas.puzzleWon = false;
+    gameCanvas.highScore = 0;
 }
 
 function saveLevelHistory()
 {
-    var db = Sql.LocalStorage.openDatabaseSync(
-        "SameGame",
-        "2.0",
-        "SameGame Local Data",
-        100
-    );
-    var dataStr = "INSERT INTO Puzzle VALUES(?, ?, ?, ?)";
-    var data = [
-        puzzlePath,
-        gameCanvas.score,
-        gameCanvas.moves,
-        Math.floor(gameDuration / 1000)
-    ];
-    gameCanvas.puzzleWon = true;
-
-    db.transaction(
-        function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Puzzle(level TEXT, score NUMBER, moves NUMBER, time NUMBER)');
-            tx.executeSql(dataStr, data);
-        }
-    );
 }
 
 function nuke() //For "Debug mode"
