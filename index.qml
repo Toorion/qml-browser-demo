@@ -20,11 +20,11 @@ Rectangle {
             model: ListModel {
                 id: previewsModel
                 objectName: "previewsModel"
-                ListElement {
-                    previewName: "Calculator"
-                    previewUrl: "calc/preview.png"
-                    folder: "calc"
-                }
+                //ListElement {
+                    //previewName: "Calculator"
+                    //previewUrl: "calc/preview.png"
+                    //folder: "calc"
+                //}
                 ListElement {
                     previewName: "Custom Material"
                     previewUrl: "3d-material/preview.png"
@@ -145,11 +145,11 @@ Rectangle {
                     previewUrl: "stock/preview.png"
                     folder: "stock"
                 }
-                ListElement {
-                    previewName: "3D Character Controller"
-                    previewUrl: "3d-charactercontroller/preview.png"
-                    folder: "3d-charactercontroller"
-                }
+                //ListElement {
+                    //previewName: "3D Character Controller"
+                    //previewUrl: "3d-charactercontroller/preview.png"
+                    //folder: "3d-charactercontroller"
+                //}
                 ListElement {
                     previewName: "3D Custom Shapes"
                     previewUrl: "3d-customshapes/preview.png"
